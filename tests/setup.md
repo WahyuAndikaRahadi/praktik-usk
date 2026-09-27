@@ -15,6 +15,8 @@ cd bookstore
 ### 2. Install Dependensi PHP
 Jalankan Composer untuk menginstall seluruh paket dan dependensi framework Laravel:
 ```bash
+composer clear-cache
+composer dump-autoload
 composer install
 ```
 
