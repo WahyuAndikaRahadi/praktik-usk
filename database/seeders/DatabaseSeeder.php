@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '089876543210',
             'address' => 'Jl. Merdeka No. 45, Jakarta'
         ]);
-
+        
         $cat1 = Category::create(['name' => 'Teknologi', 'slug' => 'teknologi']);
         $cat2 = Category::create(['name' => 'Novel', 'slug' => 'novel']);
         $cat3 = Category::create(['name' => 'Bisnis & Finansial', 'slug' => 'bisnis-finansial']);
