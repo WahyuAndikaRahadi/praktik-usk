@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.26.25/sweetalert2.min.css">
 </head>
 <body class="min-h-screen flex flex-col bg-base-200 text-base-content font-sans">
 
@@ -91,27 +92,7 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="max-w-6xl mx-auto w-full px-4 pt-4">
-            <div class="alert alert-success shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{{ session('success') }}</span>
-            </div>
-        </div>
-    @endif
 
-    @if(session('error'))
-        <div class="max-w-6xl mx-auto w-full px-4 pt-4">
-            <div class="alert alert-error shadow-sm text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{{ session('error') }}</span>
-            </div>
-        </div>
-    @endif
 
     <main class="flex-grow">
         @yield('content')
@@ -139,9 +120,93 @@
         </nav>
     </footer>
 
-    <div class="bg-base-300 text-center py-4 text-sm text-base-content/80">
-        <p>&copy; {{ date('Y') }} WahyuStore. Hak Cipta Dilindungi.</p>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.26.25/sweetalert2.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: {!! json_encode(session('success')) !!},
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
 
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: {!! json_encode(session('error')) !!},
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: 'Tutup'
+                });
+            @endif
+
+            @if(session('info'))
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Informasi',
+                    text: {!! json_encode(session('info')) !!},
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: 'Tutup'
+                });
+            @endif
+
+            @if(session('warning'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: {!! json_encode(session('warning')) !!},
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: 'Tutup'
+                });
+            @endif
+
+            @if($errors->any())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memproses!',
+                    html: `{!! implode('<br>', $errors->all()) !!}`,
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: 'Tutup'
+                });
+            @endif
+
+            // Auto-intersept standard confirm dialogs on forms
+            document.querySelectorAll('form[data-confirm], form[onsubmit*="confirm"]').forEach(function (form) {
+                let confirmText = form.getAttribute('data-confirm');
+                const onsubmitAttr = form.getAttribute('onsubmit');
+                
+                if (!confirmText && onsubmitAttr) {
+                    const match = onsubmitAttr.match(/confirm\(['"](.+?)['"]\)/);
+                    if (match && match[1]) {
+                        confirmText = match[1];
+                    }
+                }
+                
+                if (confirmText) {
+                    form.removeAttribute('onsubmit');
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: 'Konfirmasi',
+                            text: confirmText,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#e11d48',
+                            cancelButtonColor: '#6b7280',
+                            confirmButtonText: 'Ya, Lanjutkan!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit();
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

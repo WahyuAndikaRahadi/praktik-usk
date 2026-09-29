@@ -31,15 +31,15 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->intended(route('admin.dashboard'))->with('success', 'Selamat datang di Panel Admin, ' . Auth::user()->name . '!');
             }
 
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('home'))->with('success', 'Selamat datang kembali, ' . Auth::user()->name . '!');
         }
 
         return back()->withErrors([
             'email' => 'Email atau password yang Anda masukkan salah.',
-        ])->onlyInput('email');
+        ])->with('error', 'Email atau password yang Anda masukkan salah.')->onlyInput('email');
     }
 
     public function showRegisterForm()
