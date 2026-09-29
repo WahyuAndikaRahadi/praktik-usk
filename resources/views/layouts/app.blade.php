@@ -22,6 +22,9 @@
                 <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                     <li><a href="{{ route('home') }}">Beranda</a></li>
                     <li><a href="{{ route('books.index') }}">Katalog Buku</a></li>
+                    @auth
+                        <li><a href="{{ route('orders.index') }}">Pesanan Saya</a></li>
+                    @endauth
                     <li><a href="{{ route('about') }}">Tentang Kami</a></li>
                     <li><a href="{{ route('contact.index') }}">Hubungi Admin</a></li>
                 </ul>
@@ -66,6 +69,9 @@
                         <span class="hidden md:inline font-medium text-sm">{{ auth()->user()->name }}</span>
                     </div>
                     <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-lg mt-2">
+                        <li class="menu-title text-xs">Akun</li>
+                        <li><a href="{{ route('orders.index') }}" class="{{ request()->routeIs('orders.*') ? 'active font-semibold' : '' }}">Pesanan Saya</a></li>
+                        <li class="divider my-1"></li>
                         @if(auth()->user()->role === 'admin')
                             <li><a href="{{ route('admin.dashboard') }}" class="text-primary font-bold">Panel Admin</a></li>
                             <li class="divider my-1"></li>
@@ -121,6 +127,9 @@
             <a href="{{ route('home') }}" class="link link-hover">Beranda</a>
             <a href="{{ route('books.index') }}" class="link link-hover">Katalog Buku</a>
             <a href="{{ route('cart.index') }}" class="link link-hover">Keranjang Belanja</a>
+            @auth
+                <a href="{{ route('orders.index') }}" class="link link-hover">Pesanan Saya</a>
+            @endauth
         </nav>
         <nav>
             <h6 class="footer-title">Informasi</h6>

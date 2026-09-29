@@ -52,6 +52,9 @@
         </div>
 
         <div class="flex flex-col sm:flex-row justify-center gap-3">
+            @auth
+                <a href="{{ route('orders.index') }}" class="btn btn-outline btn-primary">Lihat Pesanan Saya</a>
+            @endauth
             <a href="{{ route('books.index') }}" class="btn btn-primary">Lanjut Belanja Buku</a>
             <a href="{{ route('home') }}" class="btn btn-ghost">Kembali ke Beranda</a>
         </div>
