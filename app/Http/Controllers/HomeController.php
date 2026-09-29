@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $latestBooks = Book::with('category')->latest()->take(8)->get();
+        $latestBooks = Book::with('category')->latest()->take(4)->get();
         $categories = Category::withCount('books')->get();
 
         return view('home', compact('latestBooks', 'categories'));
